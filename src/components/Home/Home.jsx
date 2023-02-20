@@ -2,6 +2,7 @@ import axios from 'axios'
 import React, { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router'
 import "./home.scss"
+import { AiFillDelete } from "react-icons/ai";
 
 const Home = () => {
 
@@ -41,6 +42,13 @@ const Home = () => {
         navigate(`/movie-particular-details/${id}`)
     }
 
+    const handleDelete=(id)=>{
+        axios.delete(`https://pyramidionsbackend-production.up.railway.app/movies/delete/${id}`)
+        .then((res)=>{
+            getData()
+        })
+    }
+
   return (
     <div>
         <div className='text-primary main-title'>List of Movies</div>
@@ -63,6 +71,12 @@ const Home = () => {
                                     handleMovieView(el._id)
                                   }}
                                 >View</button>
+                                <div 
+                                  className='delete'
+                                  onClick={()=>{
+                                    alert(`Sorry..! Your movie will be deleted.`, handleDelete(el._id))
+                                  }}
+                                ><AiFillDelete /></div>
                             </div>
                         </div>
                     )

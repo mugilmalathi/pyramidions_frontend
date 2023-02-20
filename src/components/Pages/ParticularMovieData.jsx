@@ -22,7 +22,7 @@ const ParticularMovieData = () => {
             <div>
                 <div>{data.movieName}</div>
                 <div>{data.desc}</div>
-                <div>Movie rating: <span className='ms-1 text-primary'>{data.rating}</span></div>
+                <div>Movie rating: <span className='ms-1 text-primary'>{data.rating}.0</span></div>
             </div>
         </div>
     </div>
