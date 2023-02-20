@@ -1,0 +1,17 @@
+.navbar{
+    width: 80%;
+    height: 10vh;
+    margin: auto;
+    border-radius: 8px;
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+    position: sticky;
+    top: 0;
+}
+
+a{
+    text-decoration: none;
+    color: #fff;
+    font-weight: 700;
+}
