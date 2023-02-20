@@ -28,7 +28,7 @@
 <h3 align="left" > Movie API >><h3>
 <p align="left">
 <br />
-<a target="blank" href="https://pyramidionsbackend-production.up.railway.app/movies">Deployed Link</a>
+<a target="blank" href="https://pyramidionsbackend-production.up.railway.app/movies/list">Deployed Link</a>
 </p>
 
 <h3 align="left" > Movie Detail store API >><h3>
