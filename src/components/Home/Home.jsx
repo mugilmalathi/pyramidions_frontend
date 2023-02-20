@@ -3,15 +3,20 @@ import React, { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router'
 import "./home.scss"
 import { AiFillDelete } from "react-icons/ai";
+import { useToast } from '@chakra-ui/react'
 
 const Home = () => {
 
     const[data, setData]=useState([])
+    const[movieData, setMovieData]=useState([])
     const navigate = useNavigate()
+    var prevMovieData;
+    let toast = useToast()
 
     useEffect(()=>{
         getData()
-    }, [])
+        getMoviesData()
+    }, [prevMovieData])
 
     const getData=()=>{
         axios.get(`https://pyramidionsbackend-production.up.railway.app/movies/list`)
@@ -20,22 +25,43 @@ const Home = () => {
         })
     }
 
-    const handleMovieData=()=>{
-        axios.post(`https://pyramidionsbackend-production.up.railway.app/movies/list`,{
-            store: true
+    const getMoviesData=()=>{
+        axios.get(`https://pyramidionsbackend-production.up.railway.app/movies-details/list`)
+        .then((res)=>{
+            setMovieData(res.data)
         })
     }
 
     const handleCartData=(id, data)=>{
-        axios.post(`https://pyramidionsbackend-production.up.railway.app/movies-details/create`,{
-        movieName: data.movieName,
-        poster: data.poster,
-        desc: data.desc,
-        rating: data.rating
-        })
-        .then((res)=>{
-            console.log("Success..!");
-        })
+
+        prevMovieData = movieData.find(((ele)=>ele.movieName===data.movieName))
+        
+        if(!prevMovieData){
+            axios.post(`https://pyramidionsbackend-production.up.railway.app/movies-details/create`,{
+                movieName: data.movieName,
+                poster: data.poster,
+                desc: data.desc,
+                rating: data.rating
+            })
+            .then((res)=>{
+                getData()
+                getMoviesData()
+                toast({
+                    title: 'Successfully',
+                    description: "Movie added to store successfully",
+                    status: 'success',
+                    duration: 9000,
+                    isClosable: true,
+                })
+            })
+        }else{
+            toast({
+                title: 'Movie already added.',
+                status: 'error',
+                duration: 9000,
+                isClosable: true,
+            })
+        }
     }
 
     const handleMovieView=(id)=>{
@@ -46,6 +72,12 @@ const Home = () => {
         axios.delete(`https://pyramidionsbackend-production.up.railway.app/movies/delete/${id}`)
         .then((res)=>{
             getData()
+            toast({
+                title: 'Your Movie Deleted.',
+                status: 'error',
+                duration: 9000,
+                isClosable: true,
+            })
         })
     }
 
@@ -62,7 +94,6 @@ const Home = () => {
                             <div>
                                 <button
                                   onClick={()=>{
-                                    handleMovieData()
                                     handleCartData(el._id ,el)
                                   }}
                                 >Add to Store</button>
@@ -74,7 +105,7 @@ const Home = () => {
                                 <div 
                                   className='delete'
                                   onClick={()=>{
-                                    alert(`Sorry..! Your movie will be deleted.`, handleDelete(el._id))
+                                    handleDelete(el._id)
                                   }}
                                 ><AiFillDelete /></div>
                             </div>
